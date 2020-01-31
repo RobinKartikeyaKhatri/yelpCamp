@@ -28,11 +28,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/campgrounds", (req, res) => {
-    Campground.find((err, allCampgrounds) => {
+    Campground.find((err, campgrounds) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds", {campgrounds: allCampgrounds});
+            res.render("campgrounds", {campgrounds: campgrounds});
         }
     });
 });
