@@ -3,20 +3,13 @@ const   express             = require("express"),
         bodyParser          = require("body-parser"),
         mongoose            = require("mongoose"),
         expressSanitizer    = require("express-sanitizer"),
+        Campground          = require("./models/campground"),
         app                 = express();
 
 // DB Connection
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
 
-// Campground Schema
-const campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
 
-// Campground Model
-const Campground = mongoose.model("Campground", campgroundSchema);
 
 // NPM Packages Setup
 app.set("view engine", "ejs");
