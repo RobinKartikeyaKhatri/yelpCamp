@@ -4,8 +4,11 @@ const   express             = require("express"),
         mongoose            = require("mongoose"),
         expressSanitizer    = require("express-sanitizer"),
         Campground          = require("./models/campground"),
+        seedDB                = require("./seeds");
         app                 = express();
 
+
+seedDB();
 // DB Connection
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
 
