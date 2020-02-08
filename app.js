@@ -4,7 +4,8 @@ const   express             = require("express"),
         mongoose            = require("mongoose"),
         expressSanitizer    = require("express-sanitizer"),
         Campground          = require("./models/campground"),
-        seedDB                = require("./seeds");
+        Comment             = require("./models/comment"),
+        seedDB              = require("./seeds");
         app                 = express();
 
 
@@ -21,12 +22,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serving Public Directory
 app.use(express.static(__dirname + "/public"));
-
-// Campground.create({
-//     name: "Granite Hill",
-//     image: "https://images.unsplash.com/photo-1551256817-e6099a18ad79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1158&q=80",
-//     description: "This is a huge granite hill, no bathrooms. No water. Beautiful granite!"
-// });
 
 app.get("/", (req, res) => {
     res.render("landing");
@@ -69,10 +64,11 @@ app.get("/campgrounds/new", (req, res) => {
 // SHOW ROUTE
 app.get("/campgrounds/:id", (req, res) => {
     const id = req.params.id;
-    Campground.findById(id, (err, foundCampground) => {
+    Campground.findById(id).populate("comments").exec((err, foundCampground) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(foundCampground);
             res.render("show", {campground: foundCampground});
         }
     });
