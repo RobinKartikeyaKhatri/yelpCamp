@@ -1,12 +1,16 @@
 // NPM Packages
-const   express             = require("express"),
-        bodyParser          = require("body-parser"),
-        mongoose            = require("mongoose"),
-        expressSanitizer    = require("express-sanitizer"),
-        Campground          = require("./models/campground"),
-        Comment             = require("./models/comment"),
-        seedDB              = require("./seeds");
-        app                 = express();
+const   express                 = require("express"),
+        bodyParser              = require("body-parser"),
+        mongoose                = require("mongoose"),
+        passport                = require("passport"),
+        LocalStrategy           = require("passport-local"),
+        passportLocalMongoose   = require("passport-local-mongoose"),
+        expressSanitizer        = require("express-sanitizer"),
+        Campground              = require("./models/campground"),
+        Comment                 = require("./models/comment"),
+        User                    = require("./models/user");
+        seedDB                  = require("./seeds");
+        app                     = express();
 
 
 seedDB();
