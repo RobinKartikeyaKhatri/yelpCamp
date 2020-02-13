@@ -2,6 +2,14 @@ const express = require("express");
 const router  = express.Router();
 const Campground = require("../models/campground");
 
+// middleware function to check is user is loggedin or not
+const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/login");
+}
+
 // INDEX ROUTE
 router.get("/", (req, res) => {
     Campground.find((err, campgrounds) => {
@@ -14,25 +22,25 @@ router.get("/", (req, res) => {
 });
 
 // CREATE ROUTE
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, (req, res) => {
     const name = req.sanitize(req.body.name);
     const image = req.sanitize(req.body.image);
     const description = req.sanitize(req.body.description);
-    const newCampground = {name: name, image: image, description: description};
+    const author = {id: req.user._id, username: req.user.username}
+    const newCampground = {name: name, image: image, description: description, author: author};
 
     Campground.create(newCampground, (err, newlyCreatedCampground) => {
         if (err) {
             console.log(err);
         } else {
-            console.log("A new campground added successfully");
-            console.log(newlyCreatedCampground);
+            console.log(newCampground);
             res.redirect("/campgrounds");
         }
     });
 });
 
 // NEW ROUTE
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
     res.render("campgrounds/new");
 });
 
