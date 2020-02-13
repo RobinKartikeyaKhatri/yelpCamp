@@ -36,6 +36,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Serving Public Directory
 app.use(express.static(__dirname + "/public"));
 
+// middleware function to check is user is loggedin or not
+const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/login");
+}
+
 app.get("/", (req, res) => {
     res.render("landing");
 });
@@ -88,7 +96,7 @@ app.get("/campgrounds/:id", (req, res) => {
 });
 
 // Comments NEW ROUTE
-app.get("/campgrounds/:id/comments/new", (req, res) => {
+app.get("/campgrounds/:id/comments/new", isLoggedIn, (req, res) => {
     // find campground by id and then send this id to comments/new route
     Campground.findById(req.params.id, (err, campground) => {
         if (err) {
@@ -100,7 +108,7 @@ app.get("/campgrounds/:id/comments/new", (req, res) => {
 });
 
 // Comments Create ROUTE
-app.post("/campgrounds/:id/comments", (req, res) => {
+app.post("/campgrounds/:id/comments", isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (err, campground) => {
         if (err) {
             console.log(err);
@@ -145,6 +153,12 @@ app.post("/register", (req, res) => {
 // Show Login Form
 app.get("/login", (req, res) => {
     res.render("login");
+});
+
+// Logout Logic
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/campgrounds");
 });
 
 // Handle Login Logic
