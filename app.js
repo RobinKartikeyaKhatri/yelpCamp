@@ -36,6 +36,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Serving Public Directory
 app.use(express.static(__dirname + "/public"));
 
+// middleware to pass current user info
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 // middleware function to check is user is loggedin or not
 const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
