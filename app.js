@@ -1,6 +1,7 @@
 // NPM Packages
 const   express                 = require("express"),
         bodyParser              = require("body-parser"),
+        methodOverride          = require("method-override"),
         mongoose                = require("mongoose"),
         passport                = require("passport"),
         LocalStrategy           = require("passport-local"),
@@ -24,6 +25,7 @@ const campgroundRoutes = require("./routes/campgrounds"),
 // DB Connection
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
 
+app.use(methodOverride("_method"));
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
