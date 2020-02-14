@@ -10,6 +10,26 @@ const isLoggedIn = (req, res, next) => {
     res.redirect("/login");
 }
 
+const checkCampgroundOwnerShip = (req, res, next) => {
+    // is user logged in
+    if (req.isAuthenticated()) {
+        Campground.findById(req.params.id, (err, foundCampground) => {
+            if (err) {
+                res.redirect("back");
+            } else {
+                // does the user own campground
+                if (foundCampground.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
+
 // INDEX ROUTE
 router.get("/", (req, res) => {
     Campground.find((err, campgrounds) => {
@@ -58,13 +78,9 @@ router.get("/:id", (req, res) => {
 });
 
 // Edit Campground Route
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", checkCampgroundOwnerShip, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
-        if (err) {
-            res.redirect("/campgrounds");
-        } else {
-            res.render("campgrounds/edit", {campground: foundCampground});
-        }
+        res.render("campgrounds/edit", {campground: foundCampground});
     });
 });
 
