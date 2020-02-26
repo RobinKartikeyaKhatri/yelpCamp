@@ -40,12 +40,13 @@ router.post("/register", (req, res) => {
 
 // Show Login Form
 router.get("/login", (req, res) => {
-    res.render("login", {message: req.flash("error")});
+    res.render("login");
 });
 
 // Logout Logic
 router.get("/logout", (req, res) => {
     req.logout();
+    req.flash("success", "Logged you out!");
     res.redirect("/campgrounds");
 });
 
