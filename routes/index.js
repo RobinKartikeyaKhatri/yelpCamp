@@ -3,14 +3,6 @@ const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
 
-// middleware function to check is user is loggedin or not
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
-
 // ROOT Route
 router.get("/", (req, res) => {
     res.render("landing");
@@ -29,10 +21,11 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
     User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
         if (err) {
-            console.log(err);
-            return res.render("register");
+            req.flash("error", err.message);
+            return res.render("register", {"error": err.message});
         }
         passport.authenticate("local")(req, res, () => {
+            req.flash("success", "Welcome to YelpCamp " + user.username);
             res.redirect("/campgrounds");
         });
     });
