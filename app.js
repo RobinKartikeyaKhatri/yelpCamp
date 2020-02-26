@@ -1,5 +1,6 @@
 // NPM Packages
 const   express                 = require("express"),
+        flash                   = require("connect-flash"),
         bodyParser              = require("body-parser"),
         methodOverride          = require("method-override"),
         mongoose                = require("mongoose"),
@@ -43,6 +44,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serving Public Directory
 app.use(express.static(__dirname + "/public"));
+
+// Flash Messages
+app.use(flash());
 
 // middleware to pass current user info
 app.use((req, res, next) => {
