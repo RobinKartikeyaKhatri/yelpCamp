@@ -26,6 +26,9 @@ const campgroundRoutes = require("./routes/campgrounds"),
 // DB Connection
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
 
+// Flash Messages
+app.use(flash());
+
 app.use(methodOverride("_method"));
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
@@ -45,12 +48,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Serving Public Directory
 app.use(express.static(__dirname + "/public"));
 
-// Flash Messages
-app.use(flash());
+
 
 // middleware to pass current user info
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
