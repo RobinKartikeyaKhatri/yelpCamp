@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
 
 // Show Login Form
 router.get("/login", (req, res) => {
-    res.render("login");
+    res.render("login", {message: req.flash("error")});
 });
 
 // Logout Logic
