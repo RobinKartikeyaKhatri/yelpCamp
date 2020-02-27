@@ -24,7 +24,17 @@ const campgroundRoutes = require("./routes/campgrounds"),
 // seedDB();
 
 // DB Connection
-mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://robinkartik:ironmaidenjan1985@cluster0-awnie.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useCreateIndex: true
+}).then(() => {
+    console.log('Connected to DB');
+}).catch(err => {
+    console.log('ERROR:', err.message);
+});
+
+
 
 // Flash Messages
 app.use(flash());
