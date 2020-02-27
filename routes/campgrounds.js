@@ -19,10 +19,11 @@ router.get("/", (req, res) => {
 // CREATE ROUTE
 router.post("/", middleware.isLoggedIn, (req, res) => {
     const name = req.sanitize(req.body.name);
+    const price = req.sanitize(req.body.price);
     const image = req.sanitize(req.body.image);
     const description = req.sanitize(req.body.description);
     const author = {id: req.user._id, username: req.user.username}
-    const newCampground = {name: name, image: image, description: description, author: author};
+    const newCampground = {name: name, price: price, image: image, description: description, author: author};
 
     Campground.create(newCampground, (err, newlyCreatedCampground) => {
         if (err) {
